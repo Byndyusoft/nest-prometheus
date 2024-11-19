@@ -8,5 +8,5 @@ declare module "url-value-parser" {
     public replacePathValues(path: string, replacement: string): string;
   }
 
-  export = UrlValueParser;
+  export default UrlValueParser;
 }

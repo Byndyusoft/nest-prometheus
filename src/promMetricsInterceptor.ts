@@ -15,9 +15,9 @@ import { catchError, Observable, of, tap } from "rxjs";
 import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_PROM_OPTIONS,
-} from "../constants";
-import { PromModuleOptions } from "../interfaces";
-import { normalizePath, normalizeStatusCode } from "../utils";
+} from "./constants";
+import { PromModuleOptions } from "./interfaces";
+import { Normalizer } from "./utils";
 
 @Injectable()
 export class InboundInterceptor implements NestInterceptor {
@@ -55,7 +55,7 @@ export class InboundInterceptor implements NestInterceptor {
       const fullPath = `${prefixPath}${controllerPath}${methodPath}`;
 
       const { method } = request;
-      const path = normalizePath(
+      const path = Normalizer.normalizePath(
         fullPath,
         this.options.httpRequestBucket?.pathNormalizationExtraMasks as RegExp[],
         "#val",
@@ -69,7 +69,7 @@ export class InboundInterceptor implements NestInterceptor {
         return;
       }
 
-      const status = normalizeStatusCode(statusCode);
+      const status = Normalizer.normalizeStatusCode(statusCode);
 
       const labels = { method, status, path };
       this.histogram.observe(labels, duration / 1000);

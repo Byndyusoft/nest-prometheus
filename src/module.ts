@@ -12,8 +12,8 @@ import {
   DEFAULT_METRIC_PATH,
   DEFAULT_PROM_OPTIONS,
 } from "./constants";
-import { InboundInterceptor } from "./interceptor";
 import { PromModuleOptions } from "./interfaces";
+import { InboundInterceptor } from "./promMetricsInterceptor";
 
 @Global()
 @Module({})

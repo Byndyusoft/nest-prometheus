@@ -9,6 +9,7 @@ import {
 import {
   DEFAULT_BUCKETS,
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
+  DEFAULT_METRIC_PATH,
   DEFAULT_PROM_OPTIONS,
 } from "./constants";
 import { InboundInterceptor } from "./interceptor";
@@ -46,7 +47,7 @@ export class PromModule {
       : [];
 
     const dynamicModule = PrometheusModule.register({
-      path: "/metrics",
+      path: options.metricPath ?? DEFAULT_METRIC_PATH,
     });
 
     const controller = dynamicModule.controllers?.[0];

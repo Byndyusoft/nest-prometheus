@@ -26,4 +26,9 @@ export interface PromModuleOptions {
    * Set api tag if you use @byndyusoft/nest-swagger
    */
   apiTag?: string;
+
+  /**
+   * Set metric path
+   */
+  metricPath?: string;
 }

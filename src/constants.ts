@@ -1,3 +1,4 @@
+export const DEFAULT_METRIC_PATH = "/metrics";
 export const DEFAULT_PROM_OPTIONS = "PromOptions";
 export const DEFAULT_HTTP_REQUESTS_METRIC_NAME = "http_requests";
 export const DEFAULT_BUCKETS = [

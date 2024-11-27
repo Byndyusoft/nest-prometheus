@@ -1,9 +1,8 @@
 import * as url from "url";
 
 import UrlValueParser from "url-value-parser";
-
-export const Normalizer = {
-  normalizePath(
+export class Normalizer {
+  public static normalizePath(
     originalUrl: string,
     extraMasks: RegExp[],
     placeholder: string,
@@ -13,13 +12,13 @@ export const Normalizer = {
     const urlParser = new UrlValueParser({ extraMasks });
 
     return urlParser.replacePathValues(pathname!, placeholder);
-  },
+  }
 
-  normalizeStatusCode(statusCode: number): string {
+  public static normalizeStatusCode(statusCode: number): string {
     if (statusCode >= 200 && statusCode < 300) return "2XX";
     if (statusCode >= 300 && statusCode < 400) return "3XX";
     if (statusCode >= 400 && statusCode < 500) return "4XX";
 
     return "5XX";
-  },
-};
+  }
+}

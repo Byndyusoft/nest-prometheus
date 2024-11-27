@@ -2,45 +2,32 @@ import { Normalizer } from "../src/utils/normalizers";
 
 describe("Normalizer", () => {
   describe("normalizePath", () => {
-    it("Must return the original URL", () => {
-      expect(
-        Normalizer.normalizePath("/api/v1/users/:userId", [], "#val"),
-      ).toBe("/api/v1/users/:userId");
-    });
-
-    it("Must return the original URL.", () => {
-      expect(
-        Normalizer.normalizePath("/api/v1/users/user124", [], "#val"),
-      ).toBe("/api/v1/users/user124");
-    });
-
-    it("Must return the original URL", () => {
-      expect(
-        Normalizer.normalizePath(
-          "/api/v1/users/user-example",
-          [/^(?!v\d$).*\d+.*$/],
-          "#val",
-        ),
-      ).toBe("/api/v1/users/user-example");
-    });
-
-    it("Must return a URL with replacement values", () => {
-      expect(
-        Normalizer.normalizePath(
-          "/api/v1/users/user123",
-          [/^(?!v\d$).*\d+.*$/],
-          "#val",
-        ),
-      ).toBe("/api/v1/users/#val");
-    });
-
-    it("Must return a URL with replacement values", () => {
-      expect(Normalizer.normalizePath("/api/v1/users/123", [], "#val")).toBe(
+    test.each([
+      ["/api/v1/users/:userId", [], "#val", "/api/v1/users/:userId"],
+      ["/api/v1/users/user124", [], "#val", "/api/v1/users/user124"],
+      [
+        "/api/v1/users/user-example",
+        [/^(?!v\d$).*\d+.*$/],
+        "#val",
+        "/api/v1/users/user-example",
+      ],
+      [
+        "/api/v1/users/user123",
+        [/^(?!v\d$).*\d+.*$/],
+        "#val",
         "/api/v1/users/#val",
-      );
-    });
+      ],
+      ["/api/v1/users/123", [], "#val", "/api/v1/users/#val"],
+    ])(
+      'normalizePath("%s", %s, "%s") should return "%s"',
+      (url, patterns, replacement, expected) => {
+        expect(Normalizer.normalizePath(url, patterns, replacement)).toBe(
+          expected,
+        );
+      },
+    );
 
-    it("Must return error, if original URL is bad", () => {
+    it("Should throw an error for an invalid URL", () => {
       expect(() =>
         Normalizer.normalizePath("invalid-url:", [], "#val"),
       ).toThrow();
@@ -48,24 +35,17 @@ describe("Normalizer", () => {
   });
 
   describe("normalizeStatusCode", () => {
-    it('Should return "2XX" for code 200-299', () => {
-      expect(Normalizer.normalizeStatusCode(200)).toBe("2XX");
-      expect(Normalizer.normalizeStatusCode(299)).toBe("2XX");
-    });
-
-    it('Should return "3XX" for code 300-399', () => {
-      expect(Normalizer.normalizeStatusCode(300)).toBe("3XX");
-      expect(Normalizer.normalizeStatusCode(399)).toBe("3XX");
-    });
-
-    it('Should return "4XX" for code 400-499', () => {
-      expect(Normalizer.normalizeStatusCode(400)).toBe("4XX");
-      expect(Normalizer.normalizeStatusCode(499)).toBe("4XX");
-    });
-
-    it('Should return "5XX" for code 500 and above', () => {
-      expect(Normalizer.normalizeStatusCode(500)).toBe("5XX");
-      expect(Normalizer.normalizeStatusCode(599)).toBe("5XX");
+    test.each([
+      [200, "2XX"],
+      [299, "2XX"],
+      [300, "3XX"],
+      [399, "3XX"],
+      [400, "4XX"],
+      [499, "4XX"],
+      [500, "5XX"],
+      [599, "5XX"],
+    ])('normalizeStatusCode(%d) should return "%s"', (statusCode, expected) => {
+      expect(Normalizer.normalizeStatusCode(statusCode)).toBe(expected);
     });
   });
 });

@@ -1,6 +1,4 @@
 export interface PromModuleOptions {
-  [key: string]: unknown;
-
   /**
    * Enable http_request_bucket metric
    *
@@ -20,6 +18,11 @@ export interface PromModuleOptions {
      * Additional masks for requests paths normalization
      */
     pathNormalizationExtraMasks?: RegExp[];
+
+    /**
+     * Set ignored Urls
+     */
+    ignoredUrls?: string[];
   };
 
   /**

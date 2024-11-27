@@ -52,7 +52,8 @@ PromModule.forRoot({
     httpRequestBucket: {
         enable: true,
         timeBuckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 10],
-        pathNormalizationExtraMasks: [/^(?!v\d$).*\d+.*$/]
+        pathNormalizationExtraMasks: [/^(?!v\d$).*\d+.*$/],
+        ignoredUrls: ['/mymetric', '/favicon.ico']
     },
     apiTag: 'Infrastructure',
     metricPath: '/mymetric'

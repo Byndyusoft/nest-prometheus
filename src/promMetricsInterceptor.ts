@@ -1,3 +1,5 @@
+import { performance } from "perf_hooks";
+
 import {
   CallHandler,
   ExecutionContext,
@@ -38,10 +40,10 @@ export class InboundInterceptor implements NestInterceptor {
     const controllerPath = this.reflector.get<string>("path", controller);
     const methodPath = this.reflector.get<string>("path", handler);
 
-    const startTime = Date.now();
+    const startTime = performance.now();
 
     const processResponse = (statusCode: number): void => {
-      const endTime = Date.now();
+      const endTime = performance.now();
       const duration = endTime - startTime;
 
       const request = context.switchToHttp().getRequest<Request>();
@@ -62,9 +64,9 @@ export class InboundInterceptor implements NestInterceptor {
       );
 
       if (
-        path === "/favicon.ico" ||
-        path === this.options.customUrl ||
-        path === this.options.metricPath
+        this.options.httpRequestBucket?.ignoredUrls?.some(
+          (ignoredUrl) => path === ignoredUrl,
+        )
       ) {
         return;
       }

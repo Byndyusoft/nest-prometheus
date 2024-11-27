@@ -1,37 +1,34 @@
 # nest-prometheus
 
-Пакет является модулем для NestJs.
-Предоставляет метрику http_requests для Prometheus, которая измеряет длительность HTTP-запросов, распределяет их по временным интервалам и подсчитывает количество запросов и их суммарное время.
+This package is a module for NestJS.
+It provides the `http_requests` metric for Prometheus, which measures the duration of HTTP requests, distributes them into time intervals (buckets), and counts the number of requests and their total duration.
 
-- В метрике используется фильтрация по пути, методу запроса и коду ответа
-- Собираются данные о времени выполнения запросов, распределённые по временным интервалам (бакетам)
-- Сохраняется количество запросов и их суммарная длительность
+- The metric includes filtering by path, request method, and response code.
+- Data on request durations are collected and distributed into time intervals (buckets).
+- The number of requests and their total duration are recorded.
 
 ## Requirements
 
-- Node.js v16 LTS or later
+- Node.js v18 LTS or later
 - npm or yarn
 
 ## Install
 
 ```bash
-npm install 'nest-prometheus@https://github.com/Byndyusoft/nest-prometheus.git'
-//TODO npm install @byndyusoft/nest-prometheus
+npm install @byndyusoft/nest-prometheus
 ```
 
 or
 
 ```bash
-yarn add 'nest-prometheus@https://github.com/Byndyusoft/nest-prometheus.git'
-//TODO yarn add @byndyusoft/nest-prometheus
+yarn add @byndyusoft/nest-prometheus
 ```
 
 ## Usage
 
 ```typescript
 import { Module } from "@nestjs/common";
-import { PromModule } from "nest-prometheus";
-//TODO import { PromModule } from '@byndyusoft/nest-prometheus'
+import { PromModule } from "@byndyusoft/nest-prometheus";
 
 @Module({
   imports: [

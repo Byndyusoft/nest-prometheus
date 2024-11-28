@@ -1,6 +1,6 @@
 import { ApiTags } from "@byndyusoft/nest-swagger";
 import { DynamicModule, Global, Module } from "@nestjs/common";
-import { APP_INTERCEPTOR, Reflector } from "@nestjs/core";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import {
   makeHistogramProvider,
   PrometheusModule,
@@ -10,17 +10,20 @@ import {
   DEFAULT_BUCKETS,
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_METRIC_PATH,
-  DEFAULT_PROM_OPTIONS,
 } from "./constants";
-import { PromModuleOptions } from "./interfaces";
-import { InboundInterceptor } from "./promMetricsInterceptor";
+import { PromInterceptor } from "./promInterceptor";
+import {
+  ConfigurableModuleClass,
+  MODULE_OPTIONS_TOKEN,
+  OPTIONS_TYPE,
+} from "./promModuleDefinition";
 
 @Global()
 @Module({})
-export class PromModule {
-  public static forRoot(options: PromModuleOptions = {}): DynamicModule {
+export class PromModule extends ConfigurableModuleClass {
+  public static register(options: typeof OPTIONS_TYPE): DynamicModule {
     const registryOptionsProvider = {
-      provide: DEFAULT_PROM_OPTIONS,
+      provide: MODULE_OPTIONS_TOKEN,
       useValue: options,
     };
 
@@ -38,11 +41,10 @@ export class PromModule {
       ? [
           {
             provide: APP_INTERCEPTOR,
-            useClass: InboundInterceptor,
+            useClass: PromInterceptor,
           },
           metricProvider,
           registryOptionsProvider,
-          Reflector,
         ]
       : [];
 
@@ -55,7 +57,7 @@ export class PromModule {
     if (controller && options.apiTag) ApiTags(options.apiTag)(controller);
 
     return {
-      module: PromModule,
+      ...super.register(options),
       imports: [dynamicModule],
       providers: [...registryInterceptorProvider],
       exports: [PrometheusModule, PromModule],

@@ -16,16 +16,17 @@ import { catchError, Observable, of, tap } from "rxjs";
 
 import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
-  DEFAULT_PROM_OPTIONS,
+  DEFAULT_IGNORED_URLS,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
+import { MODULE_OPTIONS_TOKEN } from "./promModuleDefinition";
 import { Normalizer } from "./utils";
 
 @Injectable()
-export class InboundInterceptor implements NestInterceptor {
+export class PromInterceptor implements NestInterceptor {
   public constructor(
     private readonly reflector: Reflector,
-    @Inject(DEFAULT_PROM_OPTIONS) private readonly options: PromModuleOptions,
+    @Inject(MODULE_OPTIONS_TOKEN) private readonly options: PromModuleOptions,
     @InjectMetric(DEFAULT_HTTP_REQUESTS_METRIC_NAME)
     private readonly histogram: Histogram,
   ) {}
@@ -63,13 +64,9 @@ export class InboundInterceptor implements NestInterceptor {
         "#val",
       );
 
-      if (
-        this.options.httpRequestBucket?.ignoredUrls?.some(
-          (ignoredUrl) => path === ignoredUrl,
-        )
-      ) {
-        return;
-      }
+      const ignoredUrls =
+        this.options.httpRequestBucket?.ignoredUrls ?? DEFAULT_IGNORED_URLS;
+      if (ignoredUrls.includes(path)) return;
 
       const status = Normalizer.normalizeStatusCode(statusCode);
 

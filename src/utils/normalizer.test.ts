@@ -1,4 +1,4 @@
-import { Normalizer } from "../src/utils/normalizers";
+import { Normalizer } from "./normalizer";
 
 describe("Normalizer", () => {
   describe("normalizePath", () => {

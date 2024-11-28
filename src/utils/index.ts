@@ -1,1 +1,1 @@
-export * from "./normalizers";
+export * from "./normalizer";

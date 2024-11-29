@@ -9,7 +9,7 @@ It provides the `http_requests` metric for Prometheus, which measures the durati
 
 ## Requirements
 
-- Node.js v18 LTS or later
+- Node.js v20 LTS or later
 - npm or yarn
 
 ## Install

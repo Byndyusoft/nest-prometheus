@@ -437,14 +437,13 @@ __metadata:
     "@nestjs/core": "npm:10.4.11"
     "@types/express": "npm:5.0.0"
     "@types/jest": "npm:29.5.14"
-    "@types/node": "npm:20"
+    "@types/node": "npm:20.17.9"
     "@willsoto/nestjs-prometheus": "npm:^6.0.1"
     eslint: "npm:8.57.0"
     express: "npm:4.18.2"
     husky: "npm:8.0.2"
     jest: "npm:29.7.0"
     markdownlint-cli: "npm:0.33.0"
-    perf_hooks: "npm:^0.0.1"
     prettier: "npm:3.3.2"
     prettier-plugin-packagejson: "npm:2.2.15"
     prom-client: "npm:^15.1.3"
@@ -2016,12 +2015,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20":
-  version: 20.17.8
-  resolution: "@types/node@npm:20.17.8"
+"@types/node@npm:20.17.9":
+  version: 20.17.9
+  resolution: "@types/node@npm:20.17.9"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 165f6f016accd34c58fc6317916de4f74c245a27ea818d5ace7c81ad2ac79a0387532757b943ce9da0dc2b38a0b8ae0075a2d2e2077718a52a40725f35e89210
+  checksum: f358ad6a319112fc466e38eede5b796d362f2fc9cc96e69d35e1bc034130f3e5144850da0166155da459a18bae84ad1b9d517478a00a4d570345b8a91190245e
   languageName: node
   linkType: hard
 
@@ -8717,13 +8716,6 @@ __metadata:
   version: 4.0.0
   resolution: "path-type@npm:4.0.0"
   checksum: 6a9330ad8d96f31e929feb414cde2959078379ba5a48c9e3eab34f280d7850eec6a0fa3ed5be9150e9e4d7df5139c1ae92f891b18167528553a11382d8f54183
-  languageName: node
-  linkType: hard
-
-"perf_hooks@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "perf_hooks@npm:0.0.1"
-  checksum: d671c3ff20e9c58733d4ad6bddee2dc161696cfa3a1953f899d7210ed0da1484392fa0e46b9854c8c9fa5827cfe7a358ca64bbb0339729f4e0faef8c71243fec
   languageName: node
   linkType: hard
 

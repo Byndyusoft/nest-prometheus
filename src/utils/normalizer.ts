@@ -1,6 +1,7 @@
 import * as url from "url";
 
 import UrlValueParser from "url-value-parser";
+
 export class Normalizer {
   public static normalizePath(
     originalUrl: string,

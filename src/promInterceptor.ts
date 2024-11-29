@@ -15,16 +15,16 @@ import { catchError, Observable, of, tap } from "rxjs";
 import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_IGNORED_URLS,
+  DEFAULT_METRIC_TOKEN,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
-import { MODULE_OPTIONS_TOKEN } from "./promModuleDefinition";
 import { Normalizer } from "./utils";
 
 @Injectable()
 export class PromInterceptor implements NestInterceptor {
   public constructor(
     private readonly reflector: Reflector,
-    @Inject(MODULE_OPTIONS_TOKEN) private readonly options: PromModuleOptions,
+    @Inject(DEFAULT_METRIC_TOKEN) private readonly options: PromModuleOptions,
     @InjectMetric(DEFAULT_HTTP_REQUESTS_METRIC_NAME)
     private readonly histogram: Histogram,
   ) {}

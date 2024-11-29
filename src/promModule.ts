@@ -10,41 +10,31 @@ import {
   DEFAULT_BUCKETS,
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_METRIC_PATH,
+  DEFAULT_METRIC_TOKEN,
 } from "./constants";
+import { PromModuleOptions } from "./interfaces";
 import { PromInterceptor } from "./promInterceptor";
-import {
-  ConfigurableModuleClass,
-  MODULE_OPTIONS_TOKEN,
-  OPTIONS_TYPE,
-} from "./promModuleDefinition";
 
 @Global()
 @Module({})
-export class PromModule extends ConfigurableModuleClass {
-  public static register(options: typeof OPTIONS_TYPE): DynamicModule {
-    const registryOptionsProvider = {
-      provide: MODULE_OPTIONS_TOKEN,
-      useValue: options,
-    };
-
-    const buckets: number[] =
-      options.httpRequestBucket?.timeBuckets ?? DEFAULT_BUCKETS;
-
-    const metricProvider = makeHistogramProvider({
-      name: DEFAULT_HTTP_REQUESTS_METRIC_NAME,
-      help: "HTTP requests - Duration in seconds",
-      labelNames: ["method", "status", "path"],
-      buckets,
-    });
-
+export class PromModule {
+  public static register(options: PromModuleOptions): DynamicModule {
     const registryInterceptorProvider = options.httpRequestBucket?.enable
       ? [
           {
             provide: APP_INTERCEPTOR,
             useClass: PromInterceptor,
           },
-          metricProvider,
-          registryOptionsProvider,
+          makeHistogramProvider({
+            name: DEFAULT_HTTP_REQUESTS_METRIC_NAME,
+            help: "HTTP requests - Duration in seconds",
+            labelNames: ["method", "status", "path"],
+            buckets: options.httpRequestBucket.timeBuckets ?? DEFAULT_BUCKETS,
+          }),
+          {
+            provide: DEFAULT_METRIC_TOKEN,
+            useValue: options,
+          },
         ]
       : [];
 
@@ -57,9 +47,9 @@ export class PromModule extends ConfigurableModuleClass {
     if (controller && options.apiTag) ApiTags(options.apiTag)(controller);
 
     return {
-      ...super.register(options),
+      module: PromModule,
       imports: [dynamicModule],
-      providers: [...registryInterceptorProvider],
+      providers: registryInterceptorProvider,
       exports: [PrometheusModule, PromModule],
     };
   }

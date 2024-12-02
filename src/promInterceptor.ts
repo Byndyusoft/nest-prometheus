@@ -24,7 +24,8 @@ import { Normalizer } from "./utils";
 export class PromInterceptor implements NestInterceptor {
   public constructor(
     private readonly reflector: Reflector,
-    @Inject(DEFAULT_PROM_OPTIONS_TOKEN) private readonly options: PromModuleOptions,
+    @Inject(DEFAULT_PROM_OPTIONS_TOKEN)
+    private readonly options: PromModuleOptions,
     @InjectMetric(DEFAULT_HTTP_REQUESTS_METRIC_NAME)
     private readonly histogram: Histogram,
   ) {}

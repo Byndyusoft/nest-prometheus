@@ -1,7 +1,6 @@
 import { Normalizer } from "../../src/utils/normalizer";
 
 describe("Normalizer", () => {
-
   describe("normalizeStatusCode", () => {
     test.each([
       [200, "2XX"],

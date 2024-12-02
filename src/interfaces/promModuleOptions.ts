@@ -15,11 +15,6 @@ export interface PromModuleOptions {
     timeBuckets?: number[];
 
     /**
-     * Additional masks for requests paths normalization
-     */
-    pathNormalizationExtraMasks?: RegExp[];
-
-    /**
      * Set ignored Urls
      */
     ignoredUrls?: string[];

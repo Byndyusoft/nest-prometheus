@@ -10,7 +10,7 @@ import {
   DEFAULT_BUCKETS,
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_METRIC_PATH,
-  DEFAULT_METRIC_TOKEN,
+  DEFAULT_PROM_OPTIONS_TOKEN,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
 import { PromInterceptor } from "./promInterceptor";
@@ -32,7 +32,7 @@ export class PromModule {
             buckets: options.httpRequestBucket.timeBuckets ?? DEFAULT_BUCKETS,
           }),
           {
-            provide: DEFAULT_METRIC_TOKEN,
+            provide: DEFAULT_PROM_OPTIONS_TOKEN,
             useValue: options,
           },
         ]

@@ -451,7 +451,6 @@ __metadata:
     semantic-release: "npm:19.0.5"
     ts-jest: "npm:29.2.5"
     typescript: "npm:5.3.3"
-    url-value-parser: "npm:^2.2.0"
   peerDependencies:
     "@byndyusoft/nest-swagger": ^7.1.9-1
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -10747,13 +10746,6 @@ __metadata:
   version: 4.0.1
   resolution: "url-join@npm:4.0.1"
   checksum: e64344239215631f82a47d8b70c65039cdbbe0eb4755f9a4e1667f94d255f42651c23c54d6bc2c58cf0060b73f9c071f3ae97f9f0f2a07e40f781e5421dc0411
-  languageName: node
-  linkType: hard
-
-"url-value-parser@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "url-value-parser@npm:2.2.0"
-  checksum: 8efcb775700e98930dd690f5ab59b9362c490d0e42d44a85e70c6398827ad4fc691e59a31499166efb44e377a5820781f83d282d826867576561c4e6debc2c7d
   languageName: node
   linkType: hard
 

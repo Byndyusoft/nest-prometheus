@@ -15,7 +15,7 @@ import { catchError, Observable, of, tap } from "rxjs";
 import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_IGNORED_URLS,
-  DEFAULT_METRIC_TOKEN,
+  DEFAULT_PROM_OPTIONS_TOKEN,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
 import { Normalizer } from "./utils";
@@ -24,7 +24,7 @@ import { Normalizer } from "./utils";
 export class PromInterceptor implements NestInterceptor {
   public constructor(
     private readonly reflector: Reflector,
-    @Inject(DEFAULT_METRIC_TOKEN) private readonly options: PromModuleOptions,
+    @Inject(DEFAULT_PROM_OPTIONS_TOKEN) private readonly options: PromModuleOptions,
     @InjectMetric(DEFAULT_HTTP_REQUESTS_METRIC_NAME)
     private readonly histogram: Histogram,
   ) {}
@@ -53,20 +53,14 @@ export class PromInterceptor implements NestInterceptor {
           ? ""
           : request.url.slice(0, controllerPathIndex);
 
-      const fullPath = `${prefixPath}${controllerPath}${methodPath}`;
-
-      const { method } = request;
-      const path = Normalizer.normalizePath(
-        fullPath,
-        this.options.httpRequestBucket?.pathNormalizationExtraMasks as RegExp[],
-        "#val",
-      );
+      const path = `${prefixPath}${controllerPath}${methodPath}`;
 
       const ignoredUrls =
         this.options.httpRequestBucket?.ignoredUrls ?? DEFAULT_IGNORED_URLS;
       if (ignoredUrls.includes(path)) return;
 
       const status = Normalizer.normalizeStatusCode(statusCode);
+      const { method } = request;
 
       const labels = { method, status, path };
       this.histogram.observe(labels, duration / 1000);

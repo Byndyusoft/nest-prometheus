@@ -393,9 +393,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@byndyusoft/eslint-config@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@byndyusoft/eslint-config@npm:3.0.0"
+"@byndyusoft/eslint-config@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@byndyusoft/eslint-config@npm:3.0.1"
   dependencies:
     "@typescript-eslint/eslint-plugin": "npm:^7.13.1"
     "@typescript-eslint/parser": "npm:^7.13.1"
@@ -417,10 +417,9 @@ __metadata:
     eslint-plugin-sonarjs: "npm:^1.0.3"
     eslint-plugin-testing-library: "npm:^6.2.2"
     eslint-plugin-unicorn: "npm:^54.0.0"
-    pkg-dir: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0 <9.0.0"
-  checksum: cd05a1e95c9669e6405c2896c7324ff4d7a69545c8dc152845cec51fa92708a417eaf2e9777ab258eea09fd067366d40d9f99fbae2c1df5ddbbfa338f8a37ab3
+  checksum: 4da95e619021e1c07881c34e6358d8ac386bb0fda8c63c896b0aff2aea1bb26f59e1ce82e5b90ddcf7bf439fa7ffd278d14276340559c29a0bab6c8916de33dc
   languageName: node
   linkType: hard
 
@@ -428,7 +427,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@byndyusoft/nest-prometheus@workspace:."
   dependencies:
-    "@byndyusoft/eslint-config": "npm:3.0.0"
+    "@byndyusoft/eslint-config": "npm:3.0.1"
     "@byndyusoft/nest-swagger": "npm:7.1.9-1"
     "@byndyusoft/tsconfig": "npm:2.1.0"
     "@commitlint/cli": "npm:17.3.0"
@@ -4986,13 +4985,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-up-simple@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "find-up-simple@npm:1.0.0"
-  checksum: aa4413499f98221b8faf609cf3720826c4957a5c337c75e4c2ab656228fb491af6aa2ede03b53d41d6079fd0a208a1a76a55b155e6b144a2a89d82d824d5b61d
-  languageName: node
-  linkType: hard
-
 "find-up@npm:^2.0.0":
   version: 2.1.0
   resolution: "find-up@npm:2.1.0"
@@ -8762,15 +8754,6 @@ __metadata:
   dependencies:
     find-up: "npm:^4.0.0"
   checksum: 220ae78b93ef48d6cd81958ff3bdda5f5e6268c9887ca430aa974370499669c72886d85db0a768898a0a09114be14aab9a7171356033c082c0d2e65f384a5886
-  languageName: node
-  linkType: hard
-
-"pkg-dir@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "pkg-dir@npm:8.0.0"
-  dependencies:
-    find-up-simple: "npm:^1.0.0"
-  checksum: dfda37417d6c4fe0daa84f536acd78009a53963739b143f9c15602e8d07452b8b1af21573cce26dccf89d6a12a9e0a52fbe61687f1d51e8bdb631725b971d93d
   languageName: node
   linkType: hard
 

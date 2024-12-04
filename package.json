@@ -55,7 +55,7 @@
     "prom-client": "^15.1.3"
   },
   "devDependencies": {
-    "@byndyusoft/eslint-config": "3.0.0",
+    "@byndyusoft/eslint-config": "3.0.1",
     "@byndyusoft/nest-swagger": "7.1.9-1",
     "@byndyusoft/tsconfig": "2.1.0",
     "@commitlint/cli": "17.3.0",

@@ -1,4 +1,4 @@
 {
   "root": true,
-  "extends": ["@byndyusoft/eslint-config/backend"]
+  "extends": ["@byndyusoft/eslint-config/header-apache-2.0", "@byndyusoft/eslint-config/backend"]
 }

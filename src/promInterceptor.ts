@@ -70,7 +70,8 @@ export class PromInterceptor implements NestInterceptor {
           ? ""
           : request.url.slice(0, controllerPathIndex);
 
-      const path = `${prefixPath}${controllerPath === "/" && methodPath.startsWith("/") ? "" : controllerPath}${methodPath === "/" ? "" : methodPath}`;
+      // eslint-disable-next-line unicorn/prefer-string-replace-all
+      const path = `${prefixPath}${controllerPath.replace(/^\/|\/$/g, "")}/${methodPath.replace(/^\/|\/$/g, "")}`;
 
       const ignoredUrls =
         this.options.httpRequestBucket?.ignoredUrls ?? DEFAULT_IGNORED_URLS;

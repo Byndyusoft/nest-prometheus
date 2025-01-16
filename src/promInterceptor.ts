@@ -64,7 +64,10 @@ export class PromInterceptor implements NestInterceptor {
 
       const request = context.switchToHttp().getRequest<Request>();
 
-      const controllerPathIndex = request.url.indexOf(controllerPath);
+      const controllerPathIndex = request.url.indexOf(
+        // eslint-disable-next-line unicorn/prefer-string-replace-all
+        controllerPath.replace(/^\/|\/$/g, ""),
+      );
       const prefixPath =
         controllerPathIndex === -1
           ? ""

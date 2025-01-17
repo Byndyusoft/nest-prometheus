@@ -32,6 +32,7 @@ import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_IGNORED_URLS,
   DEFAULT_PROM_OPTIONS_TOKEN,
+  TRIM_SLASHES_PATTERN,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
 import { Normalizer } from "./utils";
@@ -65,16 +66,14 @@ export class PromInterceptor implements NestInterceptor {
       const request = context.switchToHttp().getRequest<Request>();
 
       const controllerPathIndex = request.url.indexOf(
-        // eslint-disable-next-line unicorn/prefer-string-replace-all
-        controllerPath.replace(/^\/|\/$/g, ""),
+        controllerPath.replace(TRIM_SLASHES_PATTERN, ""),
       );
       const prefixPath =
         controllerPathIndex === -1
           ? ""
           : request.url.slice(0, controllerPathIndex);
 
-      // eslint-disable-next-line unicorn/prefer-string-replace-all
-      const path = `${prefixPath}${controllerPath.replace(/^\/|\/$/g, "")}/${methodPath.replace(/^\/|\/$/g, "")}`;
+      const path = `${prefixPath}${controllerPath.replace(TRIM_SLASHES_PATTERN, "")}/${methodPath.replace(TRIM_SLASHES_PATTERN, "")}`;
 
       const ignoredUrls =
         this.options.httpRequestBucket?.ignoredUrls ?? DEFAULT_IGNORED_URLS;

@@ -26,4 +26,3 @@ export const DEFAULT_IGNORED_URLS = [
   "/_healthz",
   "/favicon.ico",
 ];
-export const TRIM_SLASHES_PATTERN = /^\/|\/$/g;

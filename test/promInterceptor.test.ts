@@ -62,107 +62,151 @@ describe("PromInterceptor", () => {
   });
 
   test.each([
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    ["/api/v1/users/1", "users", ":user:", "/api/v1/users/:user:"],
-    ["/api/v1/users/1", "/users", ":user:", "/api/v1/users/:user:"],
-    ["/api/v1/users/1", "users", "/:user:", "/api/v1/users/:user:"],
-    ["/example", "", "example", "/example"],
-    ["/example", "", "/example", "/example"],
-    ["/example", "/", "example", "/example"],
-    ["/example", "/", "/example", "/example"],
-  ])(
-    "should observe metrics with url %s controller %s method %s resultPath %s",
-    async (url, controller, method, resultPath) => {
-      jest.spyOn(mockReflector, "get").mockImplementation((key, target) => {
-        if (key === "path") {
-          if (target.name === controller) return controller;
-          if (target.name === method) return method;
-        }
-        return "";
-      });
+    [
+      {
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        url: "/api/v1/users/1",
+        controller: "users",
+        method: ":user:",
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        resultPath: "/api/v1/users/:user:",
+      },
+    ],
+    [
+      {
+        url: "/api/v1/users/1",
+        controller: "/users",
+        method: ":user:",
+        resultPath: "/api/v1/users/:user:",
+      },
+    ],
+    [
+      {
+        url: "/api/v1/users/1",
+        controller: "users",
+        method: "/:user:",
+        resultPath: "/api/v1/users/:user:",
+      },
+    ],
+    [
+      {
+        url: "/example",
+        controller: "",
+        method: "example",
+        resultPath: "/example",
+      },
+    ],
+    [
+      {
+        url: "/example",
+        controller: "",
+        method: "/example",
+        resultPath: "/example",
+      },
+    ],
+    [
+      {
+        url: "/example",
+        controller: "/",
+        method: "example",
+        resultPath: "/example",
+      },
+    ],
+    [
+      {
+        url: "/example",
+        controller: "/",
+        method: "/example",
+        resultPath: "/example",
+      },
+    ],
+  ])("should observe metrics with %s", async (data) => {
+    jest.spyOn(mockReflector, "get").mockImplementation((key, target) => {
+      if (key === "path") {
+        if (target.name === data.controller) return data.controller;
+        if (target.name === data.method) return data.method;
+      }
+      return "";
+    });
 
-      const mockContext: Partial<ExecutionContext> = {
-        switchToHttp: jest.fn().mockReturnValue({
-          getRequest: (): Partial<Request> => ({
-            url,
-            method: "GET",
-          }),
-          getResponse: () => ({
-            statusCode: 200,
-          }),
+    const mockContext: Partial<ExecutionContext> = {
+      switchToHttp: jest.fn().mockReturnValue({
+        getRequest: (): Partial<Request> => ({
+          url: data.url,
+          method: "GET",
         }),
-        getHandler: jest.fn().mockReturnValue({ name: method }),
-        getClass: jest.fn().mockReturnValue({ name: controller }),
-      };
+        getResponse: () => ({
+          statusCode: 200,
+        }),
+      }),
+      getHandler: jest.fn().mockReturnValue({ name: data.method }),
+      getClass: jest.fn().mockReturnValue({ name: data.controller }),
+    };
 
-      const next = {
-        handle: jest.fn().mockReturnValue(of("response")),
-      };
+    const next = {
+      handle: jest.fn().mockReturnValue(of("response")),
+    };
 
-      await new Promise<void>((resolve) => {
-        interceptor.intercept(mockContext as ExecutionContext, next).subscribe({
-          complete() {
-            return resolve();
-          },
-        });
+    await new Promise<void>((resolve) => {
+      interceptor.intercept(mockContext as ExecutionContext, next).subscribe({
+        complete() {
+          return resolve();
+        },
       });
+    });
 
-      expect(next.handle).toHaveBeenCalled();
+    expect(next.handle).toHaveBeenCalled();
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(mockHistogram.observe).toHaveBeenCalledWith(
-        { method: "GET", status: "2XX", path: resultPath },
-        expect.any(Number),
-      );
-    },
-  );
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(mockHistogram.observe).toHaveBeenCalledWith(
+      { method: "GET", status: "2XX", path: data.resultPath },
+      expect.any(Number),
+    );
+  });
 
   test.each([
-    ["/_healthz", "", "_healthz"],
-    ["/_healthz", "", "/_healthz"],
-    ["/_healthz", "/", "_healthz"],
-    ["/_healthz", "/", "/_healthz"],
-  ])(
-    "should ignored observe metrics with url %s controller %s method %s resultPath %s",
-    async (url, controller, method) => {
-      jest.spyOn(mockReflector, "get").mockImplementation((key, target) => {
-        if (key === "path") {
-          if (target.name === controller) return controller;
-          if (target.name === method) return method;
-        }
-        return "";
-      });
+    [{ url: "/_healthz", controller: "", method: "_healthz" }],
+    [{ url: "/_healthz", controller: "", method: "/_healthz" }],
+    [{ url: "/_healthz", controller: "/", method: "_healthz" }],
+    [{ url: "/_healthz", controller: "/", method: "/_healthz" }],
+  ])("should ignored observe metrics with %s", async (data) => {
+    jest.spyOn(mockReflector, "get").mockImplementation((key, target) => {
+      if (key === "path") {
+        if (target.name === data.controller) return data.controller;
+        if (target.name === data.method) return data.method;
+      }
+      return "";
+    });
 
-      const mockContext: Partial<ExecutionContext> = {
-        switchToHttp: jest.fn().mockReturnValue({
-          getRequest: (): Partial<Request> => ({
-            url,
-            method: "GET",
-          }),
-          getResponse: () => ({
-            statusCode: 200,
-          }),
+    const mockContext: Partial<ExecutionContext> = {
+      switchToHttp: jest.fn().mockReturnValue({
+        getRequest: (): Partial<Request> => ({
+          url: data.url,
+          method: "GET",
         }),
-        getHandler: jest.fn().mockReturnValue({ name: method }),
-        getClass: jest.fn().mockReturnValue({ name: controller }),
-      };
+        getResponse: () => ({
+          statusCode: 200,
+        }),
+      }),
+      getHandler: jest.fn().mockReturnValue({ name: data.method }),
+      getClass: jest.fn().mockReturnValue({ name: data.controller }),
+    };
 
-      const next = {
-        handle: jest.fn().mockReturnValue(of("response")),
-      };
+    const next = {
+      handle: jest.fn().mockReturnValue(of("response")),
+    };
 
-      await new Promise<void>((resolve) => {
-        interceptor.intercept(mockContext as ExecutionContext, next).subscribe({
-          complete() {
-            return resolve();
-          },
-        });
+    await new Promise<void>((resolve) => {
+      interceptor.intercept(mockContext as ExecutionContext, next).subscribe({
+        complete() {
+          return resolve();
+        },
       });
+    });
 
-      expect(next.handle).toHaveBeenCalled();
+    expect(next.handle).toHaveBeenCalled();
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(mockHistogram.observe).not.toHaveBeenCalled();
-    },
-  );
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(mockHistogram.observe).not.toHaveBeenCalled();
+  });
 });

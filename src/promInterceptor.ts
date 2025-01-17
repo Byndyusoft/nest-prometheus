@@ -32,10 +32,11 @@ import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
   DEFAULT_IGNORED_URLS,
   DEFAULT_PROM_OPTIONS_TOKEN,
-  TRIM_SLASHES_PATTERN,
 } from "./constants";
 import { PromModuleOptions } from "./interfaces";
 import { Normalizer } from "./utils";
+
+const TRIM_SLASHES_PATTERN = /^\/|\/$/g;
 
 @Injectable()
 export class PromInterceptor implements NestInterceptor {
@@ -66,6 +67,7 @@ export class PromInterceptor implements NestInterceptor {
       const request = context.switchToHttp().getRequest<Request>();
 
       const controllerPathIndex = request.url.indexOf(
+        // eslint-disable-next-line unicorn/prefer-string-replace-all
         controllerPath.replace(TRIM_SLASHES_PATTERN, ""),
       );
       const prefixPath =
@@ -73,6 +75,7 @@ export class PromInterceptor implements NestInterceptor {
           ? ""
           : request.url.slice(0, controllerPathIndex);
 
+      // eslint-disable-next-line unicorn/prefer-string-replace-all
       const path = `${prefixPath}${controllerPath.replace(TRIM_SLASHES_PATTERN, "")}/${methodPath.replace(TRIM_SLASHES_PATTERN, "")}`;
 
       const ignoredUrls =

@@ -19,3 +19,11 @@ export * from "./interfaces";
 export * from "./promInterceptor";
 export * from "./promModule";
 export * from "./utils";
+export {
+  InjectMetric,
+  makeCounterProvider,
+  makeGaugeProvider,
+  makeHistogramProvider,
+  makeSummaryProvider,
+} from "@willsoto/nestjs-prometheus";
+export { Counter, Gauge, Histogram, Summary } from "prom-client";

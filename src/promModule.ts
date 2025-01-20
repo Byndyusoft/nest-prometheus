@@ -54,6 +54,8 @@ export class PromModule {
         ]
       : [];
 
+    const customMetrics = options.customMetrics ?? [];
+
     const dynamicModule = PrometheusModule.register({
       path: options.metricPath ?? DEFAULT_METRIC_PATH,
     });
@@ -65,8 +67,8 @@ export class PromModule {
     return {
       module: PromModule,
       imports: [dynamicModule],
-      providers: registryInterceptorProvider,
-      exports: [PrometheusModule, PromModule],
+      providers: [...registryInterceptorProvider, ...customMetrics],
+      exports: [PrometheusModule, PromModule, ...customMetrics],
     };
   }
 }

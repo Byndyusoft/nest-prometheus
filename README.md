@@ -53,10 +53,13 @@ export class ApplicationModule {}
 PromModule.register({
     httpRequestBucket: {
         enable: true,
+        // Overrides time buckets. Default time buckets is 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 10
         timeBuckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 10],
+        // Overrides ignored urls. Default ignored urls is /metrics, /_readiness, /_healthz, /favicon.ico
         ignoredUrls: ['/mymetric', '/favicon.ico']
     },
     apiTag: 'Infrastructure',
+    // Overrides metric path. Default metric path is /metrics
     metricPath: '/mymetric'
 }),
 ```

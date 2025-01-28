@@ -26,7 +26,7 @@ import { Reflector } from "@nestjs/core";
 import { InjectMetric } from "@willsoto/nestjs-prometheus";
 import { Request, Response } from "express";
 import { Histogram } from "prom-client";
-import { catchError, Observable, of, tap } from "rxjs";
+import { catchError, Observable, tap, throwError } from "rxjs";
 
 import {
   DEFAULT_HTTP_REQUESTS_METRIC_NAME,
@@ -94,13 +94,13 @@ export class PromInterceptor implements NestInterceptor {
         const response = context.switchToHttp().getResponse<Response>();
         processResponse(response.statusCode);
       }),
-      catchError((error) => {
+      catchError((error: unknown) => {
         if (error instanceof HttpException) {
           const statusCode = error.getStatus();
           processResponse(statusCode);
         }
 
-        return of(error);
+        return throwError(() => error);
       }),
     );
   }

@@ -61,7 +61,96 @@ PromModule.register({
     apiTag: 'Infrastructure',
     // Overrides metric path. Default metric path is /metrics
     metricPath: '/mymetric'
+    // Individual metrics
+    customMetrics: []
 }),
+```
+
+## Injecting individual metrics
+
+```typescript
+// module.ts
+import { Module } from "@nestjs/common";
+import { PromModule, makeCounterProvider } from "@byndyusoft/nest-prometheus";
+
+@Module({
+  imports: [
+    PromModule.register({
+      httpRequestBucket: {
+        enable: true,
+      },
+      customMetrics: [
+        makeCounterProvider({
+          name: "metric_name",
+          help: "metric_help",
+          labelNames: ["method", "path", "status"] as const,
+        }),
+      ],
+    }),
+  ],
+})
+export class ApplicationModule {}
+```
+
+```typescript
+// service.ts
+import { Injectable } from "@nestjs/common";
+import { InjectMetric, Counter } from "@byndyusoft/nest-prometheus";
+
+@Injectable()
+export class Service {
+  constructor(@InjectMetric("metric_name") public counter: Counter) {}
+}
+```
+
+## Available metrics
+
+### Counter
+
+```typescript
+// module.ts
+import { makeCounterProvider } from "@byndyusoft/nest-prometheus";
+```
+
+```typescript
+// service.ts
+import { Counter } from "@byndyusoft/nest-prometheus";
+```
+
+### Gauge
+
+```typescript
+// module.ts
+import { makeGaugeProvider } from "@byndyusoft/nest-prometheus";
+```
+
+```typescript
+// service.ts
+import { Gauge } from "@byndyusoft/nest-prometheus";
+```
+
+### Histogram
+
+```typescript
+// module.ts
+import { makeHistogramProvider } from "@byndyusoft/nest-prometheus";
+```
+
+```typescript
+// service.ts
+import { Histogram } from "@byndyusoft/nest-prometheus";
+```
+
+### Summary
+
+```typescript
+// module.ts
+import { makeSummaryProvider } from "@byndyusoft/nest-prometheus";
+```
+
+```typescript
+// service.ts
+import { Summary } from "@byndyusoft/nest-prometheus";
 ```
 
 ## Maintainers

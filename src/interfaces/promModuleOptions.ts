@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { Provider } from "@nestjs/common";
+
 export interface PromModuleOptions {
   /**
    * Enable http_request_bucket metric
@@ -45,4 +47,9 @@ export interface PromModuleOptions {
    * Set metric path
    */
   metricPath?: string;
+
+  /**
+   * Set custom metrics
+   */
+  customMetrics?: Provider[];
 }
